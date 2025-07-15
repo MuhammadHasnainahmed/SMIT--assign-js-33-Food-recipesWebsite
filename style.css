@@ -123,6 +123,8 @@ nav ul li a:hover {
   border-radius: 8px;
   display: flex;
   align-items: center ;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: space-between;
 }
 
@@ -151,4 +153,20 @@ nav ul li a:hover {
   .card {
     width: 100%;
   }
+
+  nav ul{
+    display: none;
+  }
+
+
+  .search input[type="text"],
+.search select,
+.search button
+{
+ width:  100%;
+ margin-top: 10px;
+
+}
+
+
 }
