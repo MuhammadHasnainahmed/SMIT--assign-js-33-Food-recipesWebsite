@@ -4,77 +4,49 @@ let list = document.getElementById("pizza-list");
 let search = document.getElementById("search-input");
 let searchbtn = document.getElementById("search-btn");
 
+
+
 let arrycuisine = []
-let arrydifficulty = []
+let arrydifficulty = [];
+let alldata = []
 async function getData() {
   let url = await fetch("https://dummyjson.com/recipes");
   let data = await url.json();
+
+
+alldata = data.recipes;
+
+console.log(alldata);
+
+
+
   
  
-  for (let i = 0; i < data.recipes.length; i++) {
-
-    // console.log(data.recipes[i]);
     
-        
-    if (!arrydifficulty.includes(data.recipes[i].difficulty)) {
-        arrydifficulty.push(data.recipes[i].difficulty)
+
+
+    selectcuisine.addEventListener("change", filterdata);
+    selectdifficulty.addEventListener("change", filterdata);
+  alldata.forEach((recipe) => {
+
+    if (!arrydifficulty.includes(recipe.difficulty)) {
+        arrydifficulty.push(recipe.difficulty)
     }
-
-
-    if (!arrycuisine.includes(data.recipes[i].cuisine)) {
-        arrycuisine.push(data.recipes[i].cuisine)
-    }
-
-         
-    list.innerHTML += `
-    
-    <div class="card" >
-    <h2>${data.recipes[i].name}</h2>
-      <img src="${data.recipes[i].image}" class="card-img-top" alt="${data.recipes[i].name}">
-      <div class="card-body">
-      <div class="diffi-cuis">
-      <h3>${data.recipes[i].cuisine}</h3>
-      <p>${data.recipes[i].difficulty}</p>   
-      </div>
-      <hr />
-      <p>${data.recipes[i].ingredients}</p>
-        
-      <p class="card-text" id="card-text-${data.recipes[i].id}">
-  ${data.recipes[i].instructions.join("").slice(0, 100)}...
-</p>
-<span>
-<button id="btn-${data.recipes[i].id}" onclick="readMore(${data.recipes[i].id}, '${data.recipes[i].instructions.join("")}')">Read More</button>
-</span>
-
-
-       
-    </div>
-    
-    `
-
-//   searchbtn.addEventListener('click', function(e) {
-//       e.preventDefault();
-//       let searchvalue = search.value.toUpperCase();
-//       let title = data.recipes[i].name.toLowerCase(); 
-//       if (title.includes(searchvalue)) {
-//           console.log("found");
-//        }
-//         // console.log(searchvalue);   
-//   })
-    
   
-   
+  
+    if (!arrycuisine.includes(recipe.cuisine)) {
+        arrycuisine.push(recipe.cuisine)
+    }
+  
+    
+  })
 
-    
-    
-    
-}
  
 
 arrydifficulty.forEach((value) =>{
 selectdifficulty.innerHTML += `
 
-<option value="${value}">${value}</option>
+<option  value="${value}">${value}</option>
 
 `
 })  
@@ -86,8 +58,44 @@ selectcuisine.innerHTML += `
 
 `
 })  
+
+showdata(alldata)
+
 }
+
 getData();
+
+
+function showdata(dataToShow) {
+  list.innerHTML = '';
+
+  for (let i = 0; i < dataToShow.length; i++) {
+    list.innerHTML += `
+      <div class="card">
+      <div class="card-header">
+      <h2>${dataToShow[i].name}</h2>
+       <h4>${dataToShow[i].mealType}</h4>
+      </div>
+        <img src="${dataToShow[i].image}" class="card-img-top" alt="${dataToShow[i].name}">
+        <div class="card-body">
+          <div class="diffi-cuis">
+            <h3>${dataToShow[i].cuisine}</h3>
+            <p>${dataToShow[i].difficulty}</p>   
+          </div>
+          <hr />
+          <p>${dataToShow[i].ingredients}</p>
+          <p class="card-text" id="card-text-${dataToShow[i].id}">
+            ${dataToShow[i].instructions.join("").slice(0, 100)}...
+          </p>
+          <span>
+            <button id="btn-${dataToShow[i].id}" onclick="readMore(${dataToShow[i].id}, '${dataToShow[i].instructions.join("")}')">Read More</button>
+          </span>
+        </div>
+      </div>
+    `;
+  }
+}
+
 
 function readMore(id , fulltext) {
     let btn = document.getElementById('btn-' + id)
@@ -104,6 +112,48 @@ function readMore(id , fulltext) {
               btn.innerText = "Read More"
             }
 }
+
+
+function filterdata() {
+  let cuisineva = selectcuisine.value;
+  let difficultyva = selectdifficulty.value;
+
+  let filtered = alldata.filter((recipe) => {
+    let matchCuisine = (cuisineva === "All Cuisine" || recipe.cuisine === cuisineva);
+    let matchDifficulty = (difficultyva === "All Difficulty" || recipe.difficulty === difficultyva);
+
+    return matchCuisine && matchDifficulty; 
+  });
+
+  console.log(filtered);
+  showdata(filtered);   
+}
+
+
+
+searchbtn.addEventListener('click' , (e)=>{
+  e.preventDefault();
+
+  let searchvalue = search.value;
+  // console.log(searchvalue , "aloow");
+
+  let filtered = alldata.filter((recipe) => {
+
+    return ( recipe.name.toLowerCase().includes(searchvalue.toLowerCase()));
+  })
+
+  console.log(filtered);
+
+  showdata(filtered);
+  
+  
+})
+
+
+
+
+
+
 
 
 
