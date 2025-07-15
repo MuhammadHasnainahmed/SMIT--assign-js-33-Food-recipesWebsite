@@ -87,7 +87,7 @@ function showdata(dataToShow) {
           <p class="card-text" id="card-text-${dataToShow[i].id}">
             ${dataToShow[i].instructions.join("").slice(0, 100)}...
           </p>
-          <span>
+          <span class="read-more">
             <button id="btn-${dataToShow[i].id}" onclick="readMore(${dataToShow[i].id}, '${dataToShow[i].instructions.join("")}')">Read More</button>
           </span>
         </div>
@@ -135,7 +135,7 @@ searchbtn.addEventListener('click' , (e)=>{
   e.preventDefault();
 
   let searchvalue = search.value;
-  // console.log(searchvalue , "aloow");
+  // console.log(searchvalue , "aloow");  
 
   let filtered = alldata.filter((recipe) => {
 

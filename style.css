@@ -146,6 +146,15 @@ nav ul li a:hover {
     justify-content: space-between;
 }
 
+.read-more button{
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #008080;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 
 
 
